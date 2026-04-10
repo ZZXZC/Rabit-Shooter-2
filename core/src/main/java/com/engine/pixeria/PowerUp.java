@@ -24,6 +24,7 @@ public class PowerUp {
 		if(!power_status) {
 			int z= rand.nextInt(10);
 			if(z==1) {
+				power_status = true;
 				int r = rand.nextInt(4)+1;
 				if(r==1) {
 					power_type = 1;
@@ -59,6 +60,7 @@ public class PowerUp {
 			    		Main.spawnbots();
 			    	}
 				}
+				power_status = false;
 			}
 		}
 	}
