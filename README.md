@@ -1,4 +1,4 @@
-# Rabit Shooter 2
+# Rabit Shooter 2 (Not really)
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
