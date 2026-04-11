@@ -31,11 +31,13 @@ public class Main extends ApplicationAdapter {
     
     FreeTypeFontGenerator mine;
     FreeTypeFontGenerator.FreeTypeFontParameter mine_para;
+    
     Texture player_img;
     Texture poo_img;
     static Texture bot_img;
     Texture boss_img;
     Texture game_over_img;
+    
     Rectangle boss_r;
     boolean boss_spawned = false;
     boolean game_running = false;
@@ -59,17 +61,22 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         hp_font = new BitmapFont();
         score_font = new BitmapFont();
-        player_img = new Texture("player.png");
+        
+        
+        
+        player_img = new Texture("entity/player.png");
         poo_img = new Texture("poo.png");
-        bot_img = new Texture("bot.png");
-        boss_img = new Texture("poopboss.png");
-        game_over_img = new Texture("gameover.png");
+        bot_img = new Texture("entity/bot.png");
+        boss_img = new Texture("entity/poopboss.png");
+        game_over_img = new Texture("ui/gameover.png");
+        
         
         font_handle();
         
         // nigga class
         
         player = new Player(player_img,player_speed,100);
+        powerUp = new PowerUp(player);
         boss = new Boss(boss_img , 300 , -200 , 300 , player);
         bullet = new Array<>();
         bots = new Array<>();
@@ -87,6 +94,8 @@ public class Main extends ApplicationAdapter {
         
         if(game_running && !firstLaunch) {
         bulletspawn();
+        
+        
         
         player.update();
         for (Bullet b : bullet) b.update();
@@ -108,6 +117,9 @@ public class Main extends ApplicationAdapter {
         for (Bullet b : bullet) b.render(batch);
         for (Bots b : bots) b.render(batch);
         boss_handle();
+        powerUp.render(batch);
+        powerUp.tester();
+        
         }
         hit();
         game_over();
@@ -129,6 +141,11 @@ public class Main extends ApplicationAdapter {
     		
     		batch.draw(game_over_img , 100, 200);
     		hp_font.draw(batch, "PRESS \"ENTER\" TO PLAY", 185 , 100);
+    		
+    		powerUp.power_status = false;
+    		powerUp.power_x = 700;
+    		powerUp.power_y = 700;
+    		
     		player.x = 350;
     		player.y = 350;
     		player.hp = 100;
@@ -167,8 +184,11 @@ public class Main extends ApplicationAdapter {
     	}
     	
     }
-    public void powerUp_handle() {
-    	
+    public void powerUp_handle(float x, float y) {
+    	powerUp.spawn();
+    	if(powerUp.status()) {
+    		powerUp.setLocation(x, y);
+    	}
     }
     public void kill_entity() {
     	if(player.hp<=0) {
@@ -294,6 +314,7 @@ public class Main extends ApplicationAdapter {
     			Bots c = bots.get(j);
     			Rectangle c_r = new Rectangle(c.x,c.y,50,50);
     			if(b_r.overlaps(c_r)) {
+    				powerUp_handle(b.x,b.y);
     				bullet.removeIndex(i);
     				bots.removeIndex(j);
     				bullet_deleted = true;
