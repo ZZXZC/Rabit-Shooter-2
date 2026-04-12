@@ -34,6 +34,7 @@ public class Main extends ApplicationAdapter {
     
     Texture player_img;
     Texture poo_img;
+    Texture whiteFull;
     static Texture bot_img;
     Texture boss_img;
     Texture game_over_img;
@@ -42,6 +43,7 @@ public class Main extends ApplicationAdapter {
     boolean boss_spawned = false;
     boolean game_running = false;
     boolean firstLaunch = true;
+    boolean pause = false;
     //Color hp_color;
     //Color score_color;
     float player_speed = 2;
@@ -63,7 +65,7 @@ public class Main extends ApplicationAdapter {
         hp_font = new BitmapFont();
         score_font = new BitmapFont();
         
-        
+        whiteFull = new Texture("ui/white.png");
         
         player_img = new Texture("entity/player.png");
         poo_img = new Texture("poo.png");
@@ -91,6 +93,7 @@ public class Main extends ApplicationAdapter {
         
         batch.begin(); //nigga
         
+        
         first_launch();
         
         if(game_running && !firstLaunch) {
@@ -99,10 +102,11 @@ public class Main extends ApplicationAdapter {
         powerUp.render(batch);
         powerUp.tester();
         
-        player.update();
-        for (Bullet b : bullet) b.update();
-        for (Bots b : bots) b.update();
-        
+        if(!pause) {
+        	player.update();
+        	for (Bullet b : bullet) b.update();
+        	for (Bots b : bots) b.update();
+        }
         
         kill_entity();
         change_color();
@@ -124,6 +128,7 @@ public class Main extends ApplicationAdapter {
         }
         hit();
         game_over();
+        pause();
         batch.end(); // end nigga
         
     }
@@ -167,6 +172,18 @@ public class Main extends ApplicationAdapter {
     		}
     	}
     }
+    
+    public void pause() {
+    	
+    	if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+    		pause = !pause;
+    	}
+    	if (pause) {
+    	    batch.setColor(0, 0, 0, 0.5f);
+    	    batch.draw(whiteFull, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    	    batch.setColor(Color.WHITE);
+    	}
+    }
     public void boss_handle() {
     	if(score > 499) {
     		boss_spawned = true;
@@ -175,7 +192,9 @@ public class Main extends ApplicationAdapter {
     	if(!boss_spawned) spawn_time =1;
     	if(boss_spawned) {
     		boss.render(batch);
-    		boss.update();
+    		if(!pause) {
+    			boss.update();	
+    		}
     	}
     	if(boss.hp == 20) {
     		for(int i = 1 ; i<=20 ; i++) {
