@@ -50,7 +50,7 @@ public class Main extends ApplicationAdapter {
     static Player player;
     PowerUp powerUp; 
     Boss boss;
-    int player_dmg = 5;
+    int player_dmg = 10;
     int playerhp = 100;
     float kill_cd = 0;
     public static int score = 0;
@@ -185,11 +185,6 @@ public class Main extends ApplicationAdapter {
     	}
     }
     public void boss_handle() {
-    	if(score > 499) {
-    		boss_spawned = true;
-    		spawn_time = 2;
-    	}
-    	if(!boss_spawned) spawn_time =1;
     	if(boss_spawned) {
     		boss.render(batch);
     		if(!pause) {
