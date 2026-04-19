@@ -41,22 +41,24 @@ public class Main extends ApplicationAdapter {
     
     Rectangle boss_r;
     boolean boss_spawned = false;
-    boolean game_running = false;
+    static boolean game_running = false;
     static boolean mainMenu = true;
     boolean pause = false;
+    static boolean gameOver = false;
     //Color hp_color;
     //Color score_color;
     float player_speed = 2;
     static Player player;
     PowerUp powerUp; 
     Boss boss;
+    Gui gui;
     int player_dmg = 10;
     int playerhp = 100;
     float kill_cd = 0;
     public static int score = 0;
     float temp_bot_spawn_timer = 0;
     float bullet_cd =0;
-    float spawn_time = 1;
+    static float spawn_time = 1;
     Array<Bullet> bullet;
     static Array<Bots> bots;
     @Override
@@ -71,7 +73,7 @@ public class Main extends ApplicationAdapter {
         poo_img = new Texture("poo.png");
         bot_img = new Texture("entity/bot.png");
         boss_img = new Texture("entity/poopboss.png");
-        game_over_img = new Texture("ui/gameover.png");
+        
         
         
         font_handle();
@@ -80,6 +82,7 @@ public class Main extends ApplicationAdapter {
         
         player = new Player(player_img,player_speed,100);
         powerUp = new PowerUp(player);
+        gui = new Gui();
         boss = new Boss(boss_img , 300 , -200 , 300 , player);
         bullet = new Array<>();
         bots = new Array<>();
@@ -93,7 +96,7 @@ public class Main extends ApplicationAdapter {
         
         batch.begin(); //nigga
         
-        
+        gui.render(batch);
         //first_launch();
         
         if(game_running && !mainMenu) {
@@ -209,6 +212,7 @@ public class Main extends ApplicationAdapter {
     public void kill_entity() {
     	if(player.hp<=0) {
     		game_running = false;
+    		gameOver = true;
     	}
     	if(player.x>800 || player.x <0 || player.y+50 > 800 || player.y <0) {
     		player.hp -= 20;
@@ -375,7 +379,7 @@ public class Main extends ApplicationAdapter {
         poo_img.dispose();
         bot_img.dispose();
         boss_img.dispose();
-        game_over_img.dispose();
+        
     }
     
 }
