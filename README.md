@@ -13,14 +13,6 @@ Im not a expert im a complete noob ignore how im writing any code
 - `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
 - NO ANDROID SUPPORT FOR NOW
 
-## ChangeLog As of 2.0.0
+## ChangeLog As of 2.1.0
 
-- added pause function press `p` to pause (forgot to add it before) 
-- added powerUps
-- there is now a short shield after boss hits you
-
-#### As of 2.0.2
--   powers cant be picked until the animation ends
-
-#### As of 2.0.1
--   added powerUp animation
+- remade the main menu and game over gui
